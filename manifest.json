@@ -1,0 +1,15 @@
+{
+  "name": "PictShare: 1 click image/screenshot uploader",
+  "short_name": "PictShare",
+  "description": "Adds context menues for screenshots or just individual pictures to upload via https (encrypted) to PictShare.net",
+  "version": "1.6.4",
+  "permissions": ["contextMenus","*://*.pictshare.net/","activeTab"],
+  "background": {
+    "scripts": ["pictshare.js"]
+  },
+  "author":"Christian Haschek",
+  "icons": { "16": "icon16.png",
+           "48": "icon48.png",
+          "128": "icon128.png" },
+  "manifest_version": 2
+}
