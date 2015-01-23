@@ -15,7 +15,7 @@ chrome.contextMenus.create({"title": "Upload this image to PictShare", "contexts
   else if (info.srcUrl.match(/\.(gif)$/))
     clickedImage(info.srcUrl);
   else if (!info.srcUrl.match(/\.(jpg|jpeg)$/)) //everything thats not a jpg is a png
-    convertImgToBase64(info.srcUrl, uploadBase64,'image/png');
+    clickedImage(info.srcUrl);//convertImgToBase64(info.srcUrl, uploadBase64,'image/png');
   else
     convertImgToBase64(info.srcUrl, uploadBase64,'image/jpeg');
 }});
