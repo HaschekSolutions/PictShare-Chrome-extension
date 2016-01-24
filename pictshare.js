@@ -2,7 +2,7 @@ var bkg = chrome.extension.getBackgroundPage();
 
 chrome.contextMenus.create({"title": "Upload this image to PictShare", "contexts":["image"], onclick: function(info)
 {
-  //console.log(info.linkUrl);
+  console.log(info.linkUrl);
   //console.log(info);
 
   if (info.srcUrl.substring(0, 4) == "data")
@@ -29,7 +29,26 @@ chrome.contextMenus.create({"title": "Upload this image to PictShare", "contexts
     clickedImage(info.srcUrl);
     //convertImgToBase64(info.srcUrl, uploadBase64,'image/jpeg');
   }
+  
 }});
+
+chrome.contextMenus.create({"title": "Show PictShare-stats page of this image", "targetUrlPatterns":["*://www.pictshare.net/*","*://pictshare.net/*"], "contexts":["image"], onclick: function(info2)
+{
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://www.pictshare.net/backend.php?geturlinfo="+encodeURIComponent(info2.srcUrl), true);
+    xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState == 4) {
+            var resp2 = JSON.parse(xhr.responseText);
+            if(resp2.status=='ok')
+            {
+                chrome.tabs.create({ url: 'http://stats.pictshare.net/#'+resp2.hash });
+            }
+        }
+    }
+    xhr.send();
+}});
+
 
 
 chrome.contextMenus.create({"title": "Upload Screenshot to PictShare","contexts": ["page", "selection", "link"], onclick: function(info) {
