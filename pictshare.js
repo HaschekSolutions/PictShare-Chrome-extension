@@ -7,22 +7,33 @@ chrome.contextMenus.create({"title": "Upload this image to PictShare", "contexts
 
   if (info.srcUrl.substring(0, 4) == "data")
   {
-    console.log("We've got base64");
+    console.log("got base64");
     var arr = info.srcUrl.split(";");
     var arr2 = arr[0].split("/");
     uploadBase64(info.srcUrl,arr2[0]);
   }
   else if (info.srcUrl.match(/\.(gif)$/))
+  {
+    console.log("got gif");
     clickedImage(info.srcUrl);
+  }
   else if (!info.srcUrl.match(/\.(jpg|jpeg)$/)) //everything thats not a jpg is a png
-    clickedImage(info.srcUrl);//convertImgToBase64(info.srcUrl, uploadBase64,'image/png');
+  {
+    console.log("got png or something else");
+    clickedImage(info.srcUrl);
+    //convertImgToBase64(info.srcUrl, uploadBase64,'image/png');
+  }
   else
-    clickedImage(info.srcUrl);//convertImgToBase64(info.srcUrl, uploadBase64,'image/jpeg');
+  {
+    console.log("got jpg");
+    clickedImage(info.srcUrl);
+    //convertImgToBase64(info.srcUrl, uploadBase64,'image/jpeg');
+  }
 }});
+
 
 chrome.contextMenus.create({"title": "Upload Screenshot to PictShare","contexts": ["page", "selection", "link"], onclick: function(info) {
     chrome.tabs.captureVisibleTab(null, {}, function (image) {
-
           console.log("Got screenshot!");
           uploadBase64(image,null);
     });
@@ -42,6 +53,12 @@ function clickedImage(url)
       {
         chrome.tabs.create({ url: resp.url });
       }
+      else if(resp.status='ERR') // if we couldn't upload, try as base64
+      {
+          if (!url.match(/\.(jpg|jpeg)$/))
+            convertImgToBase64(url, uploadBase64,'image/png');
+          else convertImgToBase64(url, uploadBase64,'image/jpeg');
+      }
       bkg.console.log(resp);
     }
   }
@@ -51,7 +68,6 @@ function clickedImage(url)
 function uploadBase64(info,format)
 {
   console.log("Uploading in format "+format);
-  console.log(info);
   var xhr = new XMLHttpRequest();
 
   var url = "https://www.pictshare.net/backend.php";
