@@ -57,7 +57,7 @@ function renderUploads()
                     <figcaption>"+domain+key+"</figcaption>\
                 </figure>\
                 </a> \
-                "+(result[key]===true?'':"<button id='del"+key+"' hash='"+key+"' delcode='"+result[key]+"' >Delete</button>");
+                "+(result[key]===true?'':"<button id='del"+key+"' hash='"+key+"' delcode='"+result[key]+"' >Delete "+key+"</button>");
 
                 //document.getElementById("del"+key).addEventListener("click", deleteContent);
               });
