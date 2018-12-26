@@ -33,24 +33,11 @@ chrome.contextMenus.create({"title": "DEV Upload this image to PictShare", "cont
   
 }});
 
-/*
-chrome.contextMenus.create({"title": "Show PictShare-stats page of this image", "targetUrlPatterns":["*://www.pictshare.net/*","*://pictshare.net/*"], "contexts":["image"], onclick: function(info2)
+chrome.contextMenus.create({"title": "DEV Upload this Video to PictShare", "contexts":["video"], onclick: function(info)
 {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", baseURL+"backend.php?geturlinfo="+encodeURIComponent(info2.srcUrl), true);
-    xhr.onreadystatechange = function()
-    {
-        if (xhr.readyState == 4) {
-            var resp2 = JSON.parse(xhr.responseText);
-            if(resp2.status=='ok')
-            {
-                chrome.tabs.create({ url: 'http://stats.pictshare.net/#'+resp2.hash });
-            }
-        }
-    }
-    xhr.send();
+  console.log("Uploading mp4: "+info.srcUrl);
+  getVideo(info.srcUrl);
 }});
-*/
 
 chrome.contextMenus.create({"title": "DEV Upload selected text","contexts": ["selection"], onclick: function(info) {
   uploadText(info.selectionText);
@@ -85,6 +72,38 @@ function getHTMLPage(url)
   xhr.send();
 }
 
+function storeUploadinfo(resp)
+{
+  var hash = resp.hash;
+  var deletecode = (resp.delete_code!==undefined)?resp.delete_code:true;
+
+  var obj= {};
+  obj[hash] = deletecode;
+
+  chrome.storage.sync.set(obj, function() {
+    console.log('Value stored ', obj);
+  });
+}
+
+function getVideo(url)
+{
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", baseURL+"api/geturl.php?url="+encodeURIComponent(url), true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      var resp = JSON.parse(xhr.responseText);
+      console.log(resp);
+      if(resp.url)
+      {
+        storeUploadinfo(resp)
+        bkg.console.log("Success!");
+        chrome.tabs.create({ url: resp.url });
+      }
+    }
+  }
+  xhr.send();
+}
+
 function clickedImage(url)
 {
   //send to pictshare
@@ -96,6 +115,8 @@ function clickedImage(url)
       var resp = JSON.parse(xhr.responseText);
       if(resp.url && resp.filetype != 'text')
       {
+        storeUploadinfo(resp);
+        
         bkg.console.log("Success!");
         chrome.tabs.create({ url: resp.url });
       }
@@ -152,6 +173,7 @@ function uploadBase64(info,format)
       var resp = JSON.parse(xhr.responseText);
       if(resp.url)
       {
+        storeUploadinfo(resp);
         chrome.tabs.create({ url: resp.url });
       }
       bkg.console.log(resp);
