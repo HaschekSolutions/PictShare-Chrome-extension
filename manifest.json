@@ -2,7 +2,7 @@
   "name": "PictShare selfhostable content platform",
   "short_name": "PictShare",
   "description": "Adds context menues for uploads to PictShare.net",
-  "version": "2.0",
+  "version": "2.1",
   "permissions": ["contextMenus","*://*.pictshare.net/","activeTab","storage"],
   "background": {
     "scripts": ["pictshare.js"]
