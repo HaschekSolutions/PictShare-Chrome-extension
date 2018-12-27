@@ -1,5 +1,5 @@
 var bkg = chrome.extension.getBackgroundPage();
-var baseURL = 'https://dev.pictshare.net/'
+var baseURL = 'https://pictshare.net/'
 
 chrome.contextMenus.create({"title": "DEV Upload this image to PictShare", "contexts":["image"], onclick: function(info)
 {
@@ -13,22 +13,9 @@ chrome.contextMenus.create({"title": "DEV Upload this image to PictShare", "cont
     var arr2 = arr[0].split("/");
     uploadBase64(info.srcUrl,arr2[0]);
   }
-  else if (info.srcUrl.match(/\.(gif)$/))
-  {
-    console.log("got gif");
-    clickedImage(info.srcUrl);
-  }
-  else if (!info.srcUrl.match(/\.(jpg|jpeg)$/)) //everything thats not a jpg is a png
-  {
-    console.log("got png or something else");
-    clickedImage(info.srcUrl);
-    //convertImgToBase64(info.srcUrl, uploadBase64,'image/png');
-  }
   else
   {
-    console.log("got jpg");
     clickedImage(info.srcUrl);
-    //convertImgToBase64(info.srcUrl, uploadBase64,'image/jpeg');
   }
   
 }});

@@ -1,4 +1,4 @@
-var domain = "https://dev.pictshare.net/";
+var domain = "https://pictshare.net/";
 renderUploads();
 console.log("script loaded")
 //document.getElementById("updatebtn").addEventListener("click", renderUploads);
