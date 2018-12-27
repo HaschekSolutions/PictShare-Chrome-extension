@@ -1,7 +1,7 @@
 var bkg = chrome.extension.getBackgroundPage();
 var baseURL = 'https://pictshare.net/'
 
-chrome.contextMenus.create({"title": "DEV Upload this image to PictShare", "contexts":["image"], onclick: function(info)
+chrome.contextMenus.create({"title": "Upload this image to PictShare", "contexts":["image"], onclick: function(info)
 {
   console.log(info.linkUrl);
   //console.log(info);
@@ -20,21 +20,21 @@ chrome.contextMenus.create({"title": "DEV Upload this image to PictShare", "cont
   
 }});
 
-chrome.contextMenus.create({"title": "DEV Upload this Video to PictShare", "contexts":["video"], onclick: function(info)
+chrome.contextMenus.create({"title": "Upload this Video to PictShare", "contexts":["video"], onclick: function(info)
 {
   console.log("Uploading mp4: "+info.srcUrl);
   getVideo(info.srcUrl);
 }});
 
-chrome.contextMenus.create({"title": "DEV Upload selected text","contexts": ["selection"], onclick: function(info) {
+chrome.contextMenus.create({"title": "Upload selected text","contexts": ["selection"], onclick: function(info) {
   uploadText(info.selectionText);
 }});
 
-chrome.contextMenus.create({"title": "DEV Upload HTML of this page","contexts": ["page"], onclick: function(info) {
+chrome.contextMenus.create({"title": "Upload HTML of this page","contexts": ["page"], onclick: function(info) {
   getHTMLPage(info.pageUrl);
 }});
 
-chrome.contextMenus.create({"title": "DEV Upload Screenshot to PictShare","contexts": ["page", "selection", "link"], onclick: function(info) {
+chrome.contextMenus.create({"title": "Upload Screenshot to PictShare","contexts": ["page", "selection", "link"], onclick: function(info) {
     chrome.tabs.captureVisibleTab(null, {}, function (image) {
           console.log("Got screenshot!");
           uploadBase64(image,'image/jpeg');
